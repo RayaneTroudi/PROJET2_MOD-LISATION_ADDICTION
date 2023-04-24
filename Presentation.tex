@@ -1,0 +1,170 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Welcome to Overleaf --- just edit your LaTeX on the left,
+% and we'll compile it for you on the right. If you open the
+% 'Share' menu, you can invite other users to edit at the same
+% time. See www.overleaf.com/learn for more info. Enjoy!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+%Information to be included in the title page:
+\title{Modélisation de l'addiction}
+\author{Gerbaud Florent \\ Troudi Rayane \\ Zouga Jassim}
+\institute{Polyteh Nice}
+\date{\today}
+
+%------------------------------------------------------------
+%The next block of commands puts the table of contents at the 
+%beginning of each section and highlights the current section:
+
+\AtBeginSection[]
+{
+	\begin{frame}
+		\frametitle{Table of Contents}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+
+\begin{document}
+	
+	\frame{\titlepage}
+	
+	%---------------------------------------------------------
+	%This block of code is for the table of contents after
+	%the title page
+	\begin{frame}
+		\frametitle{Table of Contents}
+		\tableofcontents
+	\end{frame}
+	%---------------------------------------------------------
+	
+	
+	\section{First section}
+	
+	\begin{frame}
+		\frametitle{Introduction}
+		
+		In this slide, some important text will be
+		\alert{highlighted} because it's important.
+		Please, don't abuse it.
+		
+		\begin{block}{Définition}
+			Sample text
+		\end{block}
+		
+		\begin{alertblock}{Important theorem}
+			Sample text in red box
+		\end{alertblock}
+		
+		\begin{examples}
+			Sample text in green box. The title of the block is ``Examples".
+		\end{examples}
+	\end{frame}
+	
+	
+\begin{frame}
+	\frametitle{Le modèle mathématiques}
+	\begin{block}{Équation théorique du modèle}
+		\begin{align*}
+			&C(t) :=\text{"Intensité de fringale ou de désir"} \\
+			&S(t):=\text{"Intensité de Self Contrôle"} \\
+			&A(t):=\text{"Passage à l'acte"}\\
+			&V(t):=\text{"Etat addictifs"} \\
+			&E(t):=\text{"Influences extérieurs"} 
+		\end{align*}
+	\end{block}
+	\begin{block}{Condition initiale}
+		\begin{align*}
+			&E(0)=E_0, \ C(0)=C_0, \ S(0)=S_0
+		\end{align*}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Constante du modèle}
+		\begin{align*}
+			&S_m\text{:="Self Contrôle max"} \\
+			&k\text{:=coefficient du passage à l'acte"} \\
+			&h\text{:="Compétition entre S et C"} \\
+			&p\text{:="Résilience psychologique"} \\
+			&\alpha\text{:="Effet de l'addiction"} \\
+			&\gamma \text{:="Accentuation du Désir dû au passage à l'acte"} \\
+			&b\text{:="Influence de passée à l'acte"} \\
+			&q\text{:="quantité maximum d'ingestion"}
+		\end{align*}
+	\end{block}
+\end{frame}
+
+	
+\begin{frame}
+	\begin{block}{Définition mathématique du modèle}
+		\begin{itemize}
+			\item<1-> $C(t+1) = C(t)- \alpha C(t) + \gamma A(t)$
+			\item<2-> $S(t+1)=S(t)+p.max\{0,S_{max}-S(t)\}-h.C(t)-k.A(t)$
+			\item<3-> $A(t)=A(V)=qV$
+			\item<4->$V= max\{1,min\left\lbrace \phi(t),0 \right\rbrace \}$
+			\item<5->$E(t)=$
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\section{Formule}
+
+\begin{frame}
+	\frametitle{F}
+	
+	In this slide, some important text will be
+	\alert{highlighted} because it's important.
+	Please, don't abuse it.
+	
+	\begin{block}{Définition}
+		Sample text
+	\end{block}
+	
+	\begin{alertblock}{Important theorem}
+		Sample text in red box
+	\end{alertblock}
+	
+	\begin{examples}
+		Sample text in green box. The title of the block is ``Examples".
+	\end{examples}
+\end{frame}
+
+\section{Test}
+
+\begin{frame}
+	\frametitle{T}
+	
+	In this slide, some important text will be
+	\alert{highlighted} because it's important.
+	Please, don't abuse it.
+	
+	\begin{block}{Définition}
+		Sample text
+	\end{block}
+	
+	\begin{alertblock}{Important theorem}
+		Sample text in red box
+	\end{alertblock}
+	
+	\begin{examples}
+		Sample text in green box. The title of the block is ``Examples".
+	\end{examples}
+\end{frame}
+
+\end{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Welcome to Overleaf --- just edit your LaTeX on the left,
+% and we'll compile it for you on the right. If you open the
+% 'Share' menu, you can invite other users to edit at the same
+% time. See www.overleaf.com/learn for more info. Enjoy!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
