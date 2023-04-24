@@ -13,21 +13,21 @@ import matplotlib.pyplot as plt
 q = 0.8
 
 
-p = 0.2
+p = -0.6
 
 alpha = 0.2
-gamma = 0.2
+
 b = (2*alpha) / q
 
 ###########################################                                        s
 # _____________ CONDITIONS INITIALES ______________ #
 ###########################################
-C0 = 0
+C0 = 1
 E0 = 1
 Sm = 0.5
 S0 = Sm
 h = p * Sm
-k = p/q * Sm
+k = (p/q) * Sm
 
 def Phi(C_t:float,S_t:float,E_t:float)->float:
     
@@ -103,7 +103,7 @@ def S(S_t:float,C_t:float,A_t:float,p:float,h:float,k:float,Smax:float)->float:
 
 
 
-weeks = 100
+weeks = 52
 
 ens_Phi = np.zeros(weeks)
 ens_C = np.zeros(weeks)
@@ -120,6 +120,8 @@ ens_E[0] = E0
 
 for w in range(1,weeks):
     
+    gamma=b*np.minimum(1,1-ens_C[w-1])
+    
     ens_Phi[w-1] = Phi(ens_C[w-1],ens_S[w-1],ens_E[w-1])
     
     ens_V[w] = V(ens_Phi[w-1])
@@ -130,9 +132,10 @@ for w in range(1,weeks):
     
     ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,np.argmax(ens_S))
     
-plt.plot(np.arange(0,weeks,1),ens_S)
+plt.plot(np.arange(0,weeks,1),ens_S,label="S")
+plt.plot(np.arange(0,weeks,1),ens_C,label="C")
+plt.legend()
 plt.show()
-
 
 
 
@@ -140,7 +143,7 @@ plt.show()
 ###########################################                                    
 # _________________MAIN__________________ #
 ###########################################
-print(ens_V)
+print(ens_C)
 
 
 
