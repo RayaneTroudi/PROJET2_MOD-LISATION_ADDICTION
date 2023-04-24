@@ -11,18 +11,15 @@ import matplotlib.pyplot as plt
 # _____________ CONSTANTES ______________ #
 ###########################################
 q = 0.8
-
-
-p = -0.6
-
+p = 0.2
 alpha = 0.2
-
+gamma = 0.2
 b = (2*alpha) / q
 
 ###########################################                                        s
 # _____________ CONDITIONS INITIALES ______________ #
 ###########################################
-C0 = 1
+C0 = 0
 E0 = 1
 Sm = 0.5
 S0 = Sm
@@ -103,12 +100,12 @@ def S(S_t:float,C_t:float,A_t:float,p:float,h:float,k:float,Smax:float)->float:
 
 
 
-weeks = 52
+weeks = 100
 
 ens_Phi = np.zeros(weeks)
-ens_C = np.zeros(weeks)
-ens_S = np.zeros(weeks)
-ens_E = np.zeros(weeks)
+ens_C = np.zeros(weeks+1)
+ens_S = np.zeros(weeks+1)
+ens_E = np.zeros(weeks+1)
 ens_A = np.zeros(weeks)
 ens_V = np.zeros(weeks)
 
@@ -118,24 +115,32 @@ ens_E[0] = E0
 
 
 
-for w in range(1,weeks):
+for w in range(1,weeks+1):
     
     gamma=b*np.minimum(1,1-ens_C[w-1])
     
     ens_Phi[w-1] = Phi(ens_C[w-1],ens_S[w-1],ens_E[w-1])
     
-    ens_V[w] = V(ens_Phi[w-1])
+    ens_V[w-1] = V(ens_Phi[w-1])
     
-    ens_A[w] = A(ens_V[w-1],q)
+    ens_A[w-1] = A(ens_V[w-1],q)
     
     ens_C[w] = C(ens_C[w-1],ens_A[w-1],alpha,gamma)
     
     ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,np.argmax(ens_S))
+
+print(ens_Phi)
     
-plt.plot(np.arange(0,weeks,1),ens_S,label="S")
-plt.plot(np.arange(0,weeks,1),ens_C,label="C")
+plt.plot(np.arange(0,weeks+1,1),ens_S,label="S")
+plt.plot(np.arange(0,weeks+1,1),ens_C,label="C")
+plt.plot(np.arange(0,weeks,1),ens_A,label="A")
+plt.plot(np.arange(0,weeks,1),ens_Phi,label="phi")
+plt.plot(np.arange(0,weeks,1),ens_V,label="phi")
+print(np.shape(ens_A))
 plt.legend()
+plt.grid()
 plt.show()
+
 
 
 
@@ -143,7 +148,7 @@ plt.show()
 ###########################################                                    
 # _________________MAIN__________________ #
 ###########################################
-print(ens_C)
+print(ens_V)
 
 
 
