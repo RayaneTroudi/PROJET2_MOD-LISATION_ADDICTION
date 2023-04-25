@@ -141,7 +141,7 @@ ens_A = np.zeros(weeks)
 ens_V = np.zeros(weeks)
 ens_L = np.zeros(weeks+1)
 
-lam0 =1
+lam0 = 0.1
 dt_lam = 0.001
 
 ens_C[0] = C0
@@ -164,40 +164,25 @@ for w in range(1,weeks+1):
         
     ens_C[w] = C(ens_C[w-1],ens_A[w-1],alpha,gamma)
     
-    ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,np.argmax(ens_S))
+    ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,max(ens_S[0:w]))
     
     ens_L[w] = L(ens_L[w-1],dt_lam)
     
+    
+
 fig, axs = plt.subplots(nrows=2, ncols=2)
-axs[0,0].plot(np.arange(0,weeks+1,1),ens_S,label="S",linestyle="o")
-axs[0,0].plot(np.arange(0,weeks+1,1),ens_C,label="V")
+axs[0,0].plot(np.arange(0,weeks+1,1),ens_S,label="Self-Contôle",linestyle="dashed")
+axs[0,0].plot(np.arange(0,weeks,1),ens_V,label="Vulnérabilité")
 axs[0,0].grid()
 axs[0,0].legend()
 
-
-
-axs[0,1].plot(np.arange(0,weeks+1,1),ens_C,label="C")
-axs[0,1].plot(np.arange(0,weeks,1),ens_A,label="A")
+axs[0,1].plot(np.arange(0,weeks+1,1),ens_C,label="Fringale")
+axs[0,1].plot(np.arange(0,weeks,1),ens_Phi,label="État Psychologique")
 axs[0,1].grid()
 axs[0,1].legend()
 
 
 plt.show()
-# plt.plot(np.arange(0,weeks,1),ens_A,label="A")
-# plt.plot(np.arange(0,weeks,1),ens_Phi,label="phi")
-# plt.plot(np.arange(0,weeks,1),ens_V,label="V")
-# plt.plot(np.arange(0,weeks+1,1),ens_E,label="E")
-
-
-
-
-
-
-###########################################                                    
-# _________________MAIN__________________ #
-###########################################
-
-
 
 
 
