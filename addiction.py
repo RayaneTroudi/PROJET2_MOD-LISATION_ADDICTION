@@ -11,7 +11,9 @@ import matplotlib.pyplot as plt
 # _____________ CONSTANTES ______________ #
 ###########################################
 q = 0.8
-p = 0.2
+
+p = 0.8
+
 alpha = 0.2
 
 b = (2*alpha) / q
@@ -34,12 +36,7 @@ Rm = 7
 ###########################################                                        
 # _____________ CONDITIONS INITIALES ______________ #
 ###########################################
-C0 = 0
-E0 = 1
-Sm = 0.5
-S0 = Sm
-h = p * Sm
-k = (p/q) * Sm
+
 
 def Phi(C_t:float,S_t:float,E_t:float)->float:
     
@@ -161,26 +158,30 @@ for w in range(1,weeks+1):
 
     ens_V[w-1] = V(ens_Phi[w-1])
     
-    ens_V[w-1] = V(ens_Phi[w-1])
-    
-    ens_A[w-1] = A(ens_V[w-1],q)
+    ens_A[w-1] = A(ens_V[w-1],ens_L[w-1],q)
     
     ens_E[w] = E(ens_E[w-1],dt)
         
     ens_C[w] = C(ens_C[w-1],ens_A[w-1],alpha,gamma)
     
-    ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,np.argmax(ens_S))
-
-print(ens_Phi)
+    ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,Sm)
     
-plt.plot(np.arange(0,weeks+1,1),ens_S,label="S")
-plt.plot(np.arange(0,weeks+1,1),ens_C,label="C")
-plt.plot(np.arange(0,weeks,1),ens_A,label="A")
-plt.plot(np.arange(0,weeks,1),ens_Phi,label="phi")
-plt.plot(np.arange(0,weeks,1),ens_V,label="V")
-print(np.shape(ens_A))
-plt.legend()
-plt.grid()
+    ens_L[w] = L(ens_L[w-1],dt_lam)
+    
+fig, axs = plt.subplots(nrows=2, ncols=2)
+axs[0,0].plot(np.arange(0,weeks+1,1),ens_S,label="S",linestyle="dashed")
+axs[0,0].plot(np.arange(0,weeks+1,1),ens_C,label="V")
+axs[0,0].grid()
+axs[0,0].legend()
+
+
+
+axs[0,1].plot(np.arange(0,weeks+1,1),ens_C,label="C")
+axs[0,1].plot(np.arange(0,weeks,1),ens_A,label="A")
+axs[0,1].grid()
+axs[0,1].legend()
+
+
 plt.show()
 # plt.plot(np.arange(0,weeks,1),ens_A,label="A")
 # plt.plot(np.arange(0,weeks,1),ens_Phi,label="phi")

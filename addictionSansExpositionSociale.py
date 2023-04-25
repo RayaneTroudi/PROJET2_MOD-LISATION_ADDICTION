@@ -7,24 +7,42 @@ import matplotlib.pyplot as plt
 
 
 
-###########################################                                        s
-# _____________ CONSTANTES ______________ #
-###########################################
-q = 0.8
+##########################################                                        s
+#_____________ CONSTANTES ______________ #
+##########################################
+q = 2
 p = 0.2
 alpha = 0.2
-gamma = 0.2
-b = (2*alpha) / q
+b = (2*alpha) / q #pas mettre la formuke (2*alpha) / q
 
 ###########################################                                        s
 # _____________ CONDITIONS INITIALES ______________ #
 ###########################################
-C0 = 0
+C0 = 0 #bcp de désir
 E0 = 1
 Sm = 0.5
-S0 = Sm
+S0 = Sm #peut de controle
 h = p * Sm
-k = (p/q) * Sm
+k = (p/q) * Sm #pareil pas de formule(p/q) * Sm
+
+# ##########################################                                        s
+# #_____________ CONSTANTES ______________ #
+# ##########################################
+# q = 0.8
+# p = 0.2
+# alpha = 0.2
+# gamma = 0.2
+# b = (2*alpha) / q
+
+# ###########################################                                        s
+# # _____________ CONDITIONS INITIALES ______________ #
+# ###########################################
+# C0 = 2
+# E0 = 1
+# Sm = 0.2
+# S0 = Sm
+# h = p * Sm
+# k = (p/q) * Sm
 
 def Phi(C_t:float,S_t:float,E_t:float)->float:
     
@@ -127,15 +145,17 @@ for w in range(1,weeks+1):
     
     ens_C[w] = C(ens_C[w-1],ens_A[w-1],alpha,gamma)
     
-    ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,np.argmax(ens_S))
+    ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,Sm)
 
 print(ens_Phi)
     
-plt.plot(np.arange(0,weeks+1,1),ens_S,label="S")
-plt.plot(np.arange(0,weeks+1,1),ens_C,label="C")
-plt.plot(np.arange(0,weeks,1),ens_A,label="A")
-plt.plot(np.arange(0,weeks,1),ens_Phi,label="phi")
-plt.plot(np.arange(0,weeks,1),ens_V,label="V")
+plt.plot(np.arange(0,weeks+1,1),ens_S,label="Self-control")
+plt.plot(np.arange(0,weeks+1,1),ens_C,label="Fringale")
+# plt.plot(np.arange(0,weeks+1,1),ens_S,label="S")
+# plt.plot(np.arange(0,weeks,1),ens_Phi,label="phi")
+
+plt.xlabel("Temps en semaines")
+plt.ylabel("")
 print(np.shape(ens_A))
 plt.legend()
 plt.grid()
