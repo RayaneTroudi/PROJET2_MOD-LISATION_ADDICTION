@@ -168,36 +168,21 @@ for w in range(1,weeks+1):
     
     ens_L[w] = L(ens_L[w-1],dt_lam)
     
+    
+
 fig, axs = plt.subplots(nrows=2, ncols=2)
-axs[0,0].plot(np.arange(0,weeks+1,1),ens_S,label="S",linestyle="dashed")
-axs[0,0].plot(np.arange(0,weeks,1),ens_V,label="V")
+axs[0,0].plot(np.arange(0,weeks+1,1),ens_S,label="Self-Contôle",linestyle="dashed")
+axs[0,0].plot(np.arange(0,weeks,1),ens_V,label="Vulnérabilité")
 axs[0,0].grid()
 axs[0,0].legend()
 
-
-
-axs[0,1].plot(np.arange(0,weeks+1,1),ens_C,label="C")
-axs[0,1].plot(np.arange(0,weeks,1),ens_A,label="A")
+axs[0,1].plot(np.arange(0,weeks+1,1),ens_C,label="Fringale")
+axs[0,1].plot(np.arange(0,weeks,1),ens_Phi,label="État Psychologique")
 axs[0,1].grid()
 axs[0,1].legend()
 
 
 plt.show()
-# plt.plot(np.arange(0,weeks,1),ens_A,label="A")
-# plt.plot(np.arange(0,weeks,1),ens_Phi,label="phi")
-# plt.plot(np.arange(0,weeks,1),ens_V,label="V")
-# plt.plot(np.arange(0,weeks+1,1),ens_E,label="E")
-
-
-
-
-
-
-###########################################                                    
-# _________________MAIN__________________ #
-###########################################
-
-
 
 
 
