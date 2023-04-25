@@ -177,7 +177,7 @@ axs[0,0].grid()
 axs[0,0].legend()
 
 axs[0,1].plot(np.arange(0,weeks+1,1),ens_C,label="Fringale")
-axs[0,1].plot(np.arange(0,weeks,1),ens_Phi,label="État Psychologique")
+axs[0,1].plot(np.arange(0,weeks,1),ens_A,label="Passage à l'acte")
 axs[0,1].grid()
 axs[0,1].legend()
 
