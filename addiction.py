@@ -1,4 +1,4 @@
-###########################################                                        s
+###########################################                                        
 # _____________ BIBLIOTHEQUES ___________ #
 ###########################################
 import numpy as np
@@ -7,27 +7,36 @@ import matplotlib.pyplot as plt
 
 
 
-###########################################                                        s
+###########################################                                        
 # _____________ CONSTANTES ______________ #
 ###########################################
 q = 0.8
 
-
-p = 0.2
+p = 0.8
 
 alpha = 0.2
-gamma = 0.2
+
 b = (2*alpha) / q
 
-###########################################                                        s
+C0 = 0
+
+E0 = 0.5
+
+Sm = 0.5
+
+S0 = Sm
+
+h = p * Sm
+
+k = (p/q) * Sm
+
+dt = 0.01
+
+Rm = 7
+###########################################                                        
 # _____________ CONDITIONS INITIALES ______________ #
 ###########################################
-C0 = 0
-E0 = 1
-Sm = 0.5
-S0 = Sm
-h = p * Sm
-k = p/q * Sm
+
 
 def Phi(C_t:float,S_t:float,E_t:float)->float:
     
@@ -44,7 +53,7 @@ def Phi(C_t:float,S_t:float,E_t:float)->float:
     
     return C_t-S_t-E_t
 
-def A(V_t:float,q:float)->float:
+def A(V_t:float,L_t:float,q:float)->float:
     """Fonction modélisant le passage à l'acte
 
     Args:
@@ -54,10 +63,10 @@ def A(V_t:float,q:float)->float:
     Returns:
         A_t (float): passage à l'acte
     """
-    return V_t * q
+    return V_t * q + (R(L_t)/Rm)*q*(1-V_t)
 
 def V(Phi_t:float)->float:
-    """Fonction modélisant l'état addictif
+    """Fonction modélisant la vulnérabilité
 
     Args:
         P_t (float): se réferrer à la fonction Phi
@@ -65,7 +74,7 @@ def V(Phi_t:float)->float:
     Returns:
         V_t (float): état addictif (0 = pas addict , float sinon)
     """
-    return np.maximum(1,np.minimum(Phi_t,0))
+    return np.minimum(1,np.maximum(Phi_t,0))
 
 def C(C_t : float ,A_t : float ,alpha : float,gamma : float) -> float:
     """Fonction modélisant l'intensité de fringale ou de désir
@@ -101,37 +110,84 @@ def S(S_t:float,C_t:float,A_t:float,p:float,h:float,k:float,Smax:float)->float:
     """
     return S_t + p * np.maximum(0,Smax-S_t) - h*C_t - k*A_t
 
+def E(E_t:float,dt:float)->int:
+    """Influence Sociale 
+
+    Args:
+        dt (float): pas de temps
+
+    Returns:
+        (float) : influence sociale
+    """
+    
+    return E_t - dt
 
 
-weeks = 100
+def L(lam_t:float,dt_lam:float)->float:
+    
+    return lam_t + dt_lam
+
+
+def R(lam:float)->int:
+    return np.random.poisson(lam)
+
+weeks = 52
 
 ens_Phi = np.zeros(weeks)
-ens_C = np.zeros(weeks)
-ens_S = np.zeros(weeks)
-ens_E = np.zeros(weeks)
+ens_C = np.zeros(weeks+1)
+ens_S = np.zeros(weeks+1)
+ens_E = np.zeros(weeks+1)
 ens_A = np.zeros(weeks)
 ens_V = np.zeros(weeks)
+ens_L = np.zeros(weeks+1)
+
+lam0 =1
+dt_lam = 0.001
 
 ens_C[0] = C0
 ens_S[0] = S0
 ens_E[0] = E0
+ens_L[0] = lam0
 
 
-
-for w in range(1,weeks):
+for w in range(1,weeks+1):
+    
+    gamma=b*np.minimum(1,1-ens_C[w-1])
     
     ens_Phi[w-1] = Phi(ens_C[w-1],ens_S[w-1],ens_E[w-1])
+
+    ens_V[w-1] = V(ens_Phi[w-1])
     
-    ens_V[w] = V(ens_Phi[w-1])
+    ens_A[w-1] = A(ens_V[w-1],ens_L[w-1],q)
     
-    ens_A[w] = A(ens_V[w-1],q)
-    
+    ens_E[w] = E(ens_E[w-1],dt)
+        
     ens_C[w] = C(ens_C[w-1],ens_A[w-1],alpha,gamma)
     
     ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,np.argmax(ens_S))
     
-plt.plot(np.arange(0,weeks,1),ens_S)
+    ens_L[w] = L(ens_L[w-1],dt_lam)
+    
+fig, axs = plt.subplots(nrows=2, ncols=2)
+axs[0,0].plot(np.arange(0,weeks+1,1),ens_S,label="S",linestyle="o")
+axs[0,0].plot(np.arange(0,weeks+1,1),ens_C,label="V")
+axs[0,0].grid()
+axs[0,0].legend()
+
+
+
+axs[0,1].plot(np.arange(0,weeks+1,1),ens_C,label="C")
+axs[0,1].plot(np.arange(0,weeks,1),ens_A,label="A")
+axs[0,1].grid()
+axs[0,1].legend()
+
+
 plt.show()
+# plt.plot(np.arange(0,weeks,1),ens_A,label="A")
+# plt.plot(np.arange(0,weeks,1),ens_Phi,label="phi")
+# plt.plot(np.arange(0,weeks,1),ens_V,label="V")
+# plt.plot(np.arange(0,weeks+1,1),ens_E,label="E")
+
 
 
 
@@ -140,7 +196,6 @@ plt.show()
 ###########################################                                    
 # _________________MAIN__________________ #
 ###########################################
-print(ens_V)
 
 
 
