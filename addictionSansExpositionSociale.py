@@ -10,21 +10,21 @@ import matplotlib.pyplot as plt
 ##########################################                                        s
 #_____________ CONSTANTES ______________ #
 ##########################################
-q = 2
-p = 0.2
+q = 0.8
+p = 0.6
 alpha = 0.2
-b = (2*alpha) / q #pas mettre la formuke (2*alpha) / q
+b = 0.5 #pas mettre la formuke (2*alpha) / q
 
 ###########################################                                        s
 # _____________ CONDITIONS INITIALES ______________ #
 ###########################################
-C0 = 0 #bcp de désir
+C0 = 2 #désir
 E0 = 1
-Sm = 0.5
-S0 = Sm #peut de controle
-h = p * Sm
-k = (p/q) * Sm #pareil pas de formule(p/q) * Sm
-
+Sm = 1
+S0 = Sm #self controle
+h = 0.5
+k = 0.375 #pareil pas de formule(p/q) * Sm
+Em=0.01
 # ##########################################                                        s
 # #_____________ CONSTANTES ______________ #
 # ##########################################
@@ -80,7 +80,7 @@ def V(Phi_t:float)->float:
     Returns:
         V_t (float): état addictif (0 = pas addict , float sinon)
     """
-    return np.maximum(1,np.minimum(Phi_t,0))
+    return np.minimum(1,np.maximum(Phi_t,0))
 
 def C(C_t : float ,A_t : float ,alpha : float,gamma : float) -> float:
     """Fonction modélisant l'intensité de fringale ou de désir
@@ -135,6 +135,8 @@ ens_E[0] = E0
 
 for w in range(1,weeks+1):
     
+    ens_E[w]=ens_E[w-1]-Em
+    
     gamma=b*np.minimum(1,1-ens_C[w-1])
     
     ens_Phi[w-1] = Phi(ens_C[w-1],ens_S[w-1],ens_E[w-1])
@@ -145,13 +147,13 @@ for w in range(1,weeks+1):
     
     ens_C[w] = C(ens_C[w-1],ens_A[w-1],alpha,gamma)
     
-    ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,Sm)
+    ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,max(ens_S[0:w]))
 
 print(ens_Phi)
     
 plt.plot(np.arange(0,weeks+1,1),ens_S,label="Self-control")
 plt.plot(np.arange(0,weeks+1,1),ens_C,label="Fringale")
-# plt.plot(np.arange(0,weeks+1,1),ens_S,label="S")
+
 # plt.plot(np.arange(0,weeks,1),ens_Phi,label="phi")
 
 plt.xlabel("Temps en semaines")

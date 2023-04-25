@@ -12,25 +12,25 @@ import matplotlib.pyplot as plt
 ###########################################
 q = 0.8
 
-p = 0.8
+p = 0.4
 
-alpha = 0.2
+alpha = 0.05
 
-b = (2*alpha) / q
+b =1.5 # (2.0*alpha) / q #1.5
 
-C0 = 0
+C0 = 0.1
 
-E0 = 0.5
+E0 = 1.0
 
 Sm = 0.5
 
 S0 = Sm
 
-h = p * Sm
+h = 0.25 #p * Sm #0.25
 
-k = (p/q) * Sm
+k = 0.5 #(p/q) * Sm
 
-dt = 0.01
+dt = 0.05
 
 Rm = 7
 ###########################################                                        
@@ -141,8 +141,8 @@ ens_A = np.zeros(weeks)
 ens_V = np.zeros(weeks)
 ens_L = np.zeros(weeks+1)
 
-lam0 =1
-dt_lam = 0.001
+lam0 =0.02
+dt_lam = 0.000
 
 ens_C[0] = C0
 ens_S[0] = S0
@@ -164,13 +164,13 @@ for w in range(1,weeks+1):
         
     ens_C[w] = C(ens_C[w-1],ens_A[w-1],alpha,gamma)
     
-    ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,Sm)
+    ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,max(ens_S[0:w]))
     
     ens_L[w] = L(ens_L[w-1],dt_lam)
     
 fig, axs = plt.subplots(nrows=2, ncols=2)
 axs[0,0].plot(np.arange(0,weeks+1,1),ens_S,label="S",linestyle="dashed")
-axs[0,0].plot(np.arange(0,weeks+1,1),ens_C,label="V")
+axs[0,0].plot(np.arange(0,weeks,1),ens_V,label="V")
 axs[0,0].grid()
 axs[0,0].legend()
 
