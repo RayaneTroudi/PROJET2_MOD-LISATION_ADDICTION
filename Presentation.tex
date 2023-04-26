@@ -1,19 +1,12 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Welcome to Overleaf --- just edit your LaTeX on the left,
-% and we'll compile it for you on the right. If you open the
-% 'Share' menu, you can invite other users to edit at the same
-% time. See www.overleaf.com/learn for more info. Enjoy!
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass{beamer}
 \usepackage[utf8]{inputenc}
-
+\usepackage{etoolbox}
+\usepackage{caption}
 \usetheme{Madrid}
 \usecolortheme{default}
 %Information to be included in the title page:
 \title{Modélisation de l'addiction}
-\author{Gerbaud Florent \\ Troudi Rayane \\ Zouga Jassim}
+\author{Gerbaud Florent\\ Troudi Rayane \\Zouga Jassim}
 \institute{Polyteh Nice}
 \date{\today}
 
@@ -43,29 +36,19 @@
 	%---------------------------------------------------------
 	
 	
-	\section{First section}
+	\section{Introduction}
 	
 	\begin{frame}
 		\frametitle{Introduction}
 		
-		In this slide, some important text will be
-		\alert{highlighted} because it's important.
-		Please, don't abuse it.
-		
-		\begin{block}{Définition}
+		\begin{block}{Définition de l'addiction}
 			Sample text
 		\end{block}
-		
-		\begin{alertblock}{Important theorem}
-			Sample text in red box
-		\end{alertblock}
-		
-		\begin{examples}
-			Sample text in green box. The title of the block is ``Examples".
-		\end{examples}
 	\end{frame}
 	
 	
+\section{Modèle mathématique}
+
 \begin{frame}
 	\frametitle{Le modèle mathématiques}
 	\begin{block}{Équation théorique du modèle}
@@ -74,7 +57,8 @@
 			&S(t):=\text{"Intensité de Self Contrôle"} \\
 			&A(t):=\text{"Passage à l'acte"}\\
 			&V(t):=\text{"Etat addictifs"} \\
-			&E(t):=\text{"Influences extérieurs"} 
+			&E(t):=\text{"Influences extérieurs"}  \\
+			&\psi(t):=\text{"État psychologique"}
 		\end{align*}
 	\end{block}
 	\begin{block}{Condition initiale}
@@ -85,86 +69,199 @@
 \end{frame}
 
 \begin{frame}
-	\begin{block}{Constante du modèle}
+	\begin{block}{Constante théorique du modèle}
 		\begin{align*}
 			&S_m\text{:="Self Contrôle max"} \\
-			&k\text{:=coefficient du passage à l'acte"} \\
+			&k\text{:="coefficient du passage à l'acte"} \\
 			&h\text{:="Compétition entre S et C"} \\
 			&p\text{:="Résilience psychologique"} \\
-			&\alpha\text{:="Effet de l'addiction"} \\
+			&\alpha\text{:="Effet d'oublie"} \\
 			&\gamma \text{:="Accentuation du Désir dû au passage à l'acte"} \\
 			&b\text{:="Influence de passée à l'acte"} \\
-			&q\text{:="quantité maximum d'ingestion"}
+			&q\text{:="quantité maximum d'ingestion"} \\
 		\end{align*}
 	\end{block}
 \end{frame}
 
-	
+
 \begin{frame}
-	\begin{block}{Définition mathématique du modèle}
+	\begin{block}{Définition mathématique du modèle initiale}
 		\begin{itemize}
 			\item<1-> $C(t+1) = C(t)- \alpha C(t) + \gamma A(t)$
 			\item<2-> $S(t+1)=S(t)+p.max\{0,S_{max}-S(t)\}-h.C(t)-k.A(t)$
 			\item<3-> $A(t)=A(V)=qV$
-			\item<4->$V= max\{1,min\left\lbrace \phi(t),0 \right\rbrace \}$
-			\item<5->$E(t)=$
+			\item<4->$V= min\{1,max\left\lbrace \phi(t),0 \right\rbrace \}$
+			\item<5->$E(t)=E_0$
+			\item<6->$\psi(t)=C(t)-S(t)-E(t)$
 		\end{itemize}
 	\end{block}
 \end{frame}
 
-\section{Formule}
+
+\section{Cas sans exposition sociale }
 
 \begin{frame}
-	\frametitle{F}
-	
-	In this slide, some important text will be
-	\alert{highlighted} because it's important.
-	Please, don't abuse it.
-	
-	\begin{block}{Définition}
-		Sample text
-	\end{block}
-	
-	\begin{alertblock}{Important theorem}
-		Sample text in red box
-	\end{alertblock}
-	
-	\begin{examples}
-		Sample text in green box. The title of the block is ``Examples".
-	\end{examples}
+	\frametitle{Les paramètres}
 \end{frame}
 
-\section{Test}
+\begin{frame}
+	\frametitle{Comment évolue le passage à l'acte en fonction de la fringale ?}
+	\begin{minipage}{0.45\linewidth}
+		\centering
+		\begin{figure}
+			\includegraphics[width=\linewidth]{SansExpositionSociale1.png}
+			\captionsetup{justification=centering, skip=5pt}
+			\caption{Fringale VS passage à l'acte (1)}
+		\end{figure}
+	\end{minipage}\hfill
+	\begin{minipage}{0.45\linewidth}
+		\centering
+		\begin{figure}
+			\includegraphics[width=\linewidth]{SansExpositionSociale2.png}
+			\captionsetup{justification=centering, skip=5pt}
+			\caption{Fringale VS passage à l'acte (2)}
+		\end{figure}
+	\end{minipage}
+\end{frame}
 
 \begin{frame}
-	\frametitle{T}
-	
-	In this slide, some important text will be
-	\alert{highlighted} because it's important.
-	Please, don't abuse it.
-	
-	\begin{block}{Définition}
-		Sample text
+	\frametitle{Comment évolue la vulnérabilité en fonction du self contrôle ?}
+	\begin{minipage}{0.45\linewidth}
+		\centering
+		\begin{figure}
+			\includegraphics[width=\linewidth]{SansExpositionSociale1_1.png}
+			\captionsetup{justification=centering, skip=5pt}
+			\caption{Self contrôle VS Vulnérabilité (1)}
+
+		\end{figure}
+	\end{minipage}\hfill
+	\begin{minipage}{0.45\linewidth}
+		\centering
+		\begin{figure}
+			\includegraphics[width=\linewidth]{SansExpositionSociale2_2.png}
+			\captionsetup{justification=centering, skip=5pt}
+			\caption{Self contrôle VS Vulnérabilité (2)}
+		\end{figure}
+	\end{minipage}
+\end{frame}
+
+\section{Cas avec exposition sociale :}
+
+\begin{frame}
+	\frametitle{Équation avec l'influence sociale}
+	%\framesubtitle{subtitle}
+	\begin{block}{Nouvelles équations}
+		\begin{enumerate}
+			\item $C(t+1) = C(t)- \alpha C(t) + \gamma A(t)$
+			\item $S(t+1)=S(t)+p.max\{0,S_{max}-S(t)\}-h.C(t)-k.A(t)$
+			\item $\alert{A(t)=A(V)=qV+\frac{R(\lambda(t))}{R_m}q\left( 1-V(t)\right) }$
+			\item $V= max\{1,min\left\lbrace \phi(t),0 \right\rbrace \}$
+			\item $\alert{E(t+1)=E(t)-m_E}$
+			\item $\psi(t)=C(t)-S(t)-E(t)$
+		\end{enumerate}
 	\end{block}
-	
-	\begin{alertblock}{Important theorem}
-		Sample text in red box
-	\end{alertblock}
-	
-	\begin{examples}
-		Sample text in green box. The title of the block is ``Examples".
-	\end{examples}
+	\begin{block}{Constante}
+		\begin{enumerate}
+			\item $m_E:=\text{"évolution de l'influence sociale"}$ 
+			\item $R_m:=\text{"Rencontre maximale"}$
+		\end{enumerate}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Comment évolue le passage à l'acte en fonction de la fringale ?}
+	\begin{minipage}{0.45\linewidth}
+		\centering
+		\begin{figure}
+			\includegraphics[width=\linewidth]{AvecExpositionSociale1.png}
+			\captionsetup{justification=centering, skip=5pt}
+			\caption{Fringale VS vulnérabilité (1)}
+		\end{figure}
+	\end{minipage}\hfill
+	\begin{minipage}{0.45\linewidth}
+		\centering
+		\begin{figure}
+			\includegraphics[width=\linewidth]{AvecExpositionSociale2.png}
+			\captionsetup{justification=centering, skip=5pt}
+			\caption{Fringale VS vulnérabilité (2)}
+		\end{figure}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Comment évolue la vulnérabilité en fonction du self contrôle ?}
+	\begin{minipage}{0.45\linewidth}
+		\centering
+		\begin{figure}
+			\includegraphics[width=\linewidth]{AvecExpositionSociale1_1.png}
+			\captionsetup{justification=raggedleft, skip=5pt}
+			\caption{Param1}
+		\end{figure}
+	\end{minipage}\hfill
+	\begin{minipage}{0.45\linewidth}
+		\centering
+		\begin{figure}
+			\includegraphics[width=\linewidth]{AvecExpositionSociale2_2.png}
+			\captionsetup{justification=centering, skip=5pt}
+			\caption{Évolution avec plus d'addiction au départ}
+		\end{figure}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}
+	\frametitle{L'influence sociale et les occasions sociales}
+	\begin{minipage}{0.45\linewidth}
+		\centering
+		\begin{figure}
+			\vspace{-0.45cm}
+			\includegraphics[width=\linewidth]{AvecExpositionSociale1_1_1.png}
+			\captionsetup{justification=centering, skip=5pt}
+			\caption{Param1}
+		\end{figure}
+	\end{minipage}\hfill
+	\begin{minipage}{0.45\linewidth}
+		\centering
+		\begin{figure}
+			\includegraphics[width=\linewidth]{AvecExpositionSociale2_2_2.png}
+			\captionsetup{justification=centering, skip=5pt}
+			\caption{Évolution avec plus d'addiction au départ}
+		\end{figure}
+	\end{minipage}
+\end{frame}
+
+\section{Approches thérapeutiques}
+
+\begin{frame}
+	\frametitle{Équation avec l'influence sociale de manière périodique}
+	%\framesubtitle{subtitle}
+	\begin{block}{Les équations qui incluent un traitement psychologique}
+		\begin{enumerate}
+			\item $C(t+1) = C(t)- \alpha C(t) + \gamma A(t)$
+			\item $S(t+1)=S(t)+p.max\{0,S_{max}-S(t)\}-h.C(t)-k.A(t)$
+			\item $A(t)=A(V)=qV+\frac{R(\lambda(t))}{R_m}q\left( 1-V(t)\right) $
+			\item $V= max\{1,min\left\lbrace \phi(t),0 \right\rbrace \}$
+			\item \alert{$E(t+1)=\begin{cases}
+					1 \text{ si la semaine est multiple de 5} \\
+					E(t)-m_E \ sinon
+				\end{cases}$}
+			\item $\psi(t)=C(t)-S(t)-E(t)$
+		\end{enumerate}
+	\end{block}
+	\begin{block}{Constante}
+		\begin{enumerate}
+			\item $m_E:=\text{"évolution de l'influence sociale"}$ 
+			\item $R_m:=\text{"Rencontre maximale"}$
+		\end{enumerate}
+	\end{block}
+\end{frame}
+
+
+\section{Conclusion}
+
+\begin{frame}
+	\frametitle{Conclusion}
 \end{frame}
 
 \end{document}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Welcome to Overleaf --- just edit your LaTeX on the left,
-% and we'll compile it for you on the right. If you open the
-% 'Share' menu, you can invite other users to edit at the same
-% time. See www.overleaf.com/learn for more info. Enjoy!
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
