@@ -10,39 +10,14 @@ import matplotlib.pyplot as plt
 ###########################################                                        
 # _____________ CONSTANTES ______________ #
 ###########################################
-#cas1
-# q = 0.8
 
-# p = 0.4
-
-# alpha = 0.05
-
-# b =1.5 # (2.0*alpha) / q #1.5
-
-# C0 = 0.5
-
-# E0 = 1.3
-
-# Sm = 0.5
-
-# S0 = Sm
-
-# h = 0.25 #p * Sm #0.25
-
-# k = 0.5 #(p/q) * Sm
-
-# dt = 0.05
-
-# Rm = 7
-
-#cas2
 q = 0.8
 
 p = 0.8
 
 alpha = 0.05
 
-b =1.5 # (2.0*alpha) / q #1.5
+b = 1.5 # (2.0*alpha) / q #1.5
 
 C0 = 2
 
@@ -149,6 +124,13 @@ def E(E_t:float,dt:float)->int:
     return E_t - dt
 
 
+def E_periodique(weeks:int,weekly_date:int,E_t:float,dE:float)->float:
+    if (weeks % weekly_date == 0):
+        return 0.8
+    return E_t - dE
+
+
+
 def L(lam_t:float,dt_lam:float)->float:
     
     return lam_t + dt_lam
@@ -157,7 +139,12 @@ def L(lam_t:float,dt_lam:float)->float:
 def R(lam:float)->int:
     return np.random.poisson(lam)
 
+def P(p0:float,time_in_addiction:float, time_total:float)->float:
+    
+    return p0*np.sqrt(time_in_addiction/time_total)
+
 weeks = 52
+
 
 ens_Phi = np.zeros(weeks)
 ens_C = np.zeros(weeks+1)
@@ -167,14 +154,20 @@ ens_A = np.zeros(weeks)
 ens_V = np.zeros(weeks)
 ens_L = np.zeros(weeks+1)
 
-lam0 =0.02
-dt_lam = 0.000
+
+lam0 = 0.02
+dt_lam = 0.001
+dE = 0.3
 
 ens_C[0] = C0
 ens_S[0] = S0
 ens_E[0] = E0
 ens_L[0] = lam0
 
+
+n_max_therapie = 52
+
+time_in_addiction = 0
 
 for w in range(1,weeks+1):
     
@@ -186,40 +179,57 @@ for w in range(1,weeks+1):
     
     ens_A[w-1] = A(ens_V[w-1],ens_L[w-1],q)
     
-    ens_E[w] = E(ens_E[w-1],dt)
+    #ens_E[w] = E(ens_E[w-1],dt)
+    
+    if (ens_V[w-1] <= 1 and ens_V[w-1]>= 0.8):
+        time_in_addiction = time_in_addiction + 1
+
+
+    if(w<n_max_therapie):
+
+        ens_E[w] = E_periodique(w,5,ens_E[w-1],dE)
+        
+        dE = dE - 0.01 #- effet bénéfique
+    else:
+        ens_E[w] = -1.0
         
     ens_C[w] = C(ens_C[w-1],ens_A[w-1],alpha,gamma)
     
     ens_S[w] = S(ens_S[w-1],ens_C[w-1],ens_A[w-1],p,h,k,max(ens_S[0:w]))
     
     ens_L[w] = L(ens_L[w-1],dt_lam)
-    
-    
+        
 
-# fig, axs = plt.subplots(nrows=2, ncols=2)
-# axs[0,0].plot(np.arange(0,weeks+1,1),ens_S,label="Self-Contôle",linestyle="dashed")
-# axs[0,0].plot(np.arange(0,weeks,1),ens_V,label="Vulnérabilité")
-# axs[0,0].grid()
-# axs[0,0].legend()
 
-# axs[0,1].plot(np.arange(0,weeks+1,1),ens_C,label="Fringale")
-# axs[0,1].plot(np.arange(0,weeks,1),ens_A,label="Passage à l'acte")
-# axs[0,1].grid()
-# axs[0,1].legend()
+fig, axs = plt.subplots(nrows=2, ncols=2)
+axs[0,0].plot(np.arange(0,weeks+1,1),ens_S,label="Self-Contôle",c="blue")
+axs[0,0].plot(np.arange(0,weeks,1),ens_V,label="Vulnérabilité",c="red")
+axs[0,0].set_title("Self-Contrôle VS Vulnérabilité")
+axs[0,0].set_xlabel("Semaines")
+axs[0,0].grid()
+axs[0,0].legend()
 
-print(ens_Phi[0])
+axs[0,1].plot(np.arange(0,weeks+1,1),ens_C,label="Fringale",c="black")
+axs[0,1].plot(np.arange(0,weeks,1),ens_A,label="Passage à l'acte",c="orange")
+axs[0,1].set_title("Fringale et Passage à l'acte")
+axs[0,1].set_xlabel("Semaines")
+axs[0,1].grid()
+axs[0,1].legend()
 
-# plt.plot(np.arange(0,weeks+1,1),ens_S,label="Self-Contôle",linestyle="dashed")
-# plt.plot(np.arange(0,weeks,1),ens_V,label="Vulnérabilité")
-# plt.grid()
-# plt.legend()
+axs[1,0].plot(np.arange(0,weeks+1,1),ens_E,label="Influence Sociale",c="green")
+axs[1,0].plot(np.arange(0,weeks+1,1),ens_C,label="Friangale",c="black")
+axs[1,0].plot(np.arange(0,weeks+1,1),ens_S,label="Self-Contôle",c="blue")
+axs[1,0].set_xlabel("Semaines")
+axs[1,0].set_title("Influence Sociale, Passage à l'acte et Self-Contrôle")
+axs[1,0].grid()
+axs[1,0].legend()
 
-plt.plot(np.arange(0,weeks+1,1),ens_C,label="Fringale")
-plt.plot(np.arange(0,weeks,1),ens_A,label="Passage à l'acte")
-plt.plot(np.arange(0,weeks,1),ens_V,label="Vulnérabilité")
-plt.grid()
-plt.legend()
-
+axs[1,1].plot(np.arange(0,weeks,1),ens_Phi,label="État Psychologique",c="purple")
+axs[1,1].plot(np.arange(0,weeks+1,1),ens_C,label="Fringale",c="black")
+axs[1,1].set_xlabel("Semaines")
+axs[1,1].set_title("Fringale et État Psychologique")
+axs[1,1].grid()
+axs[1,1].legend()
 plt.show()
 
 
