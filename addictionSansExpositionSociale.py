@@ -11,38 +11,46 @@ import matplotlib.pyplot as plt
 #_____________ CONSTANTES ______________ #
 ##########################################
 q = 0.8
-p = 0.6
-alpha = 0.2
-b = 0.5 #pas mettre la formuke (2*alpha) / q
+p = 0.4
+alpha = 0.05
+b = 1.5 #pas mettre la formuke (2*alpha) / q
 
 ###########################################                                        s
 # _____________ CONDITIONS INITIALES ______________ #
 ###########################################
-C0 = 2 #désir
-E0 = 1
-Sm = 1
+C0 = 0.9 #désir
+E0 = 0.25
+Sm = 0.15
 S0 = Sm #self controle
-h = 0.5
-k = 0.375 #pareil pas de formule(p/q) * Sm
-Em=0.01
+h = 0.25
+k = 0.6 #pareil pas de formule(p/q) * Sm
+Em=0.05
 # ##########################################                                        s
 # #_____________ CONSTANTES ______________ #
 # ##########################################
 # q = 0.8
-# p = 0.2
-# alpha = 0.2
-# gamma = 0.2
-# b = (2*alpha) / q
 
-# ###########################################                                        s
-# # _____________ CONDITIONS INITIALES ______________ #
-# ###########################################
-# C0 = 2
-# E0 = 1
-# Sm = 0.2
+# p = 0.4
+
+# alpha = 0.05
+
+# b =1.5 # (2.0*alpha) / q #1.5
+
+# C0 = 0.1
+
+# E0 = 1.0
+
+# Sm = 0.5
+
 # S0 = Sm
-# h = p * Sm
-# k = (p/q) * Sm
+
+# h = 0.25 #p * Sm #0.25
+
+# k = 0.5 #(p/q) * Sm
+
+# Em = 0.05
+
+# Rm = 7
 
 def Phi(C_t:float,S_t:float,E_t:float)->float:
     
@@ -118,7 +126,7 @@ def S(S_t:float,C_t:float,A_t:float,p:float,h:float,k:float,Smax:float)->float:
 
 
 
-weeks = 100
+weeks = 52
 
 ens_Phi = np.zeros(weeks)
 ens_C = np.zeros(weeks+1)
@@ -151,8 +159,8 @@ for w in range(1,weeks+1):
 
 print(ens_Phi)
     
-plt.plot(np.arange(0,weeks+1,1),ens_S,label="Self-control")
-plt.plot(np.arange(0,weeks+1,1),ens_C,label="Fringale")
+plt.plot(np.arange(0,weeks+1,1),ens_S,label="Self Controle")
+plt.plot(np.arange(0,weeks,1),ens_V,label="Vulnérabilité")
 
 # plt.plot(np.arange(0,weeks,1),ens_Phi,label="phi")
 
@@ -170,8 +178,8 @@ plt.show()
 ###########################################                                    
 # _________________MAIN__________________ #
 ###########################################
-print(ens_V)
-
+print(ens_Phi[0])
+print(ens_A[0])
 
 
 

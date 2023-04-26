@@ -10,17 +10,43 @@ import matplotlib.pyplot as plt
 ###########################################                                        
 # _____________ CONSTANTES ______________ #
 ###########################################
+#cas1
+# q = 0.8
+
+# p = 0.4
+
+# alpha = 0.05
+
+# b =1.5 # (2.0*alpha) / q #1.5
+
+# C0 = 0.5
+
+# E0 = 1.3
+
+# Sm = 0.5
+
+# S0 = Sm
+
+# h = 0.25 #p * Sm #0.25
+
+# k = 0.5 #(p/q) * Sm
+
+# dt = 0.05
+
+# Rm = 7
+
+#cas2
 q = 0.8
 
-p = 0.4
+p = 0.8
 
 alpha = 0.05
 
 b =1.5 # (2.0*alpha) / q #1.5
 
-C0 = 0.1
+C0 = 2
 
-E0 = 1.0
+E0 = 1.3
 
 Sm = 0.5
 
@@ -170,17 +196,29 @@ for w in range(1,weeks+1):
     
     
 
-fig, axs = plt.subplots(nrows=2, ncols=2)
-axs[0,0].plot(np.arange(0,weeks+1,1),ens_S,label="Self-Contôle",linestyle="dashed")
-axs[0,0].plot(np.arange(0,weeks,1),ens_V,label="Vulnérabilité")
-axs[0,0].grid()
-axs[0,0].legend()
+# fig, axs = plt.subplots(nrows=2, ncols=2)
+# axs[0,0].plot(np.arange(0,weeks+1,1),ens_S,label="Self-Contôle",linestyle="dashed")
+# axs[0,0].plot(np.arange(0,weeks,1),ens_V,label="Vulnérabilité")
+# axs[0,0].grid()
+# axs[0,0].legend()
 
-axs[0,1].plot(np.arange(0,weeks+1,1),ens_C,label="Fringale")
-axs[0,1].plot(np.arange(0,weeks,1),ens_A,label="Passage à l'acte")
-axs[0,1].grid()
-axs[0,1].legend()
+# axs[0,1].plot(np.arange(0,weeks+1,1),ens_C,label="Fringale")
+# axs[0,1].plot(np.arange(0,weeks,1),ens_A,label="Passage à l'acte")
+# axs[0,1].grid()
+# axs[0,1].legend()
 
+print(ens_Phi[0])
+
+# plt.plot(np.arange(0,weeks+1,1),ens_S,label="Self-Contôle",linestyle="dashed")
+# plt.plot(np.arange(0,weeks,1),ens_V,label="Vulnérabilité")
+# plt.grid()
+# plt.legend()
+
+plt.plot(np.arange(0,weeks+1,1),ens_C,label="Fringale")
+plt.plot(np.arange(0,weeks,1),ens_A,label="Passage à l'acte")
+plt.plot(np.arange(0,weeks,1),ens_V,label="Vulnérabilité")
+plt.grid()
+plt.legend()
 
 plt.show()
 
