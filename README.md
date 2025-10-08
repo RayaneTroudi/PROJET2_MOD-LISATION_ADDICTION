@@ -1,1 +1,5 @@
-# PROJET2_MOD-LISATION_ADDICTION
+# ADDICTION MODELIZATION
+
+## OBJECTIVE : 
+
+  Modelization of Human's addiction cycle mathematically. 
